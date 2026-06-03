@@ -1,0 +1,27 @@
+name: CI - TypeScript
+
+on:
+  push:
+    paths:
+      - 'typescript/v1/**'
+      - '.github/workflows/ci-typescript.yml'
+  pull_request:
+    paths:
+      - 'typescript/v1/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: typescript/v1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm test
