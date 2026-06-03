@@ -181,7 +181,7 @@ export class PaygateClient {
     }
 
     const apiResp = data as unknown as { code?: string; message?: string };
-    if (apiResp.code && apiResp.code !== '200') {
+    if (apiResp.code && apiResp.code !== 200) {
       throw new PaygateException(apiResp.code, apiResp.message ?? 'Unknown error');
     }
 

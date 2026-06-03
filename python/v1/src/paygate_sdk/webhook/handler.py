@@ -42,7 +42,7 @@ class WebhookHandler:
     """Handles incoming webhook notifications."""
 
     def __init__(self, isv_webhook_secret: str, merchant_webhook_secret: Optional[str]):
-        self._isv_secret = isv_webhook_secret
+        self._secret = isv_webhook_secret
         self._merchant_secret = merchant_webhook_secret
 
     def handle(
@@ -80,7 +80,7 @@ class WebhookHandler:
             raise PaygateException(
                 ErrorCode.INVALID_SIGNATURE, "Missing ISV webhook signature headers"
             )
-        if not verify(self._isv_secret, sig, "POST", url, ts, body):
+        if not verify(self._secret, sig, "POST", url, ts, body):
             raise PaygateException(
                 ErrorCode.INVALID_SIGNATURE, "ISV webhook signature mismatch"
             )
