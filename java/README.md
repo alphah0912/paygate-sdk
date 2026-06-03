@@ -10,14 +10,14 @@ PayGate Java client SDK. JDK 8+, 零 HTTP 依赖，一个 Jackson。
 <dependency>
     <groupId>io.github.alphah0912</groupId>
     <artifactId>paygate-sdk</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation 'io.github.alphah0912:paygate-sdk:1.0.1'
+implementation 'io.github.alphah0912:paygate-sdk:1.0.2'
 ```
 
 ## 快速开始
