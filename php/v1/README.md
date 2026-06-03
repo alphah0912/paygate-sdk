@@ -5,7 +5,12 @@ PHP 8.0+. 单依赖 `guzzlehttp/guzzle`.
 ## 安装
 
 ```bash
-composer require paygate/sdk
+# composer.json
+{
+    "repositories": [{"type": "vcs", "url": "https://github.com/alphah0912/paygate-sdk"}],
+    "require": {"paygate/sdk": "dev-master"}
+}
+composer install
 ```
 
 ## 快速开始
