@@ -43,10 +43,16 @@ print(resp.redirect_url)
 ## Webhook
 
 ```python
+from flask import Flask, request
 from paygate_sdk import WebhookHandler
 
-handler = WebhookHandler("isv_secret", "merchant_secret")
-event = handler.handle(headers, body, "https://merchant.com/webhook")
+app = Flask(__name__)
+handler = WebhookHandler("your_webhook_secret")
+
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    event = handler.handle(dict(request.headers), request.get_data(as_text=True), request.url)
+    return '', 200
 ```
 
 ## 错误处理

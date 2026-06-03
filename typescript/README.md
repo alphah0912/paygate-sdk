@@ -44,17 +44,23 @@ console.log(resp.redirectUrl);
 
 ```ts
 import { WebhookHandler } from '@alphah0912/paygate-sdk';
+import express from 'express';
 
-const handler = new WebhookHandler('isv_secret', 'notify_secret');
+const app = express();
+const handler = new WebhookHandler('your_webhook_secret');
 
-// Express 示例
-app.post('/webhook', (req, res) => {
-  const event = handler.handle(req.headers, JSON.stringify(req.body), '/webhook');
-  if (event.type === 'payment.result') {
-    console.log(event.status);
-  }
+app.post('/webhook', express.raw({ type: '*/*' }), (req, res) => {
+  const body = req.body.toString();
+  const url = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+  const headers: Record<string, string> = {};
+  Object.entries(req.headers).forEach(([k, v]) => { headers[k] = String(v); });
+
+  const event = handler.handle(headers, body, url);
+  // event.type: 'payment.result' | 'sign.success' | 'payment.completed' | 'refund.completed'
   res.sendStatus(200);
 });
+
+app.listen(3000);
 ```
 
 ## 错误处理

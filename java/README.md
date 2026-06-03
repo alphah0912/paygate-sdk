@@ -53,11 +53,34 @@ System.out.println(resp.getRedirectUrl());
 ## Webhook 接收
 
 ```java
-WebhookHandler handler = new WebhookHandler("webhook_secret");
+import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.*;
 
-WebhookEvent event = handler.handle(headers, body, "https://merchant.com/webhook");
-if (event instanceof WebhookEvent.PaymentResult pr) {
-    System.out.println(pr.getStatus());
+@RestController
+public class WebhookController {
+
+    private final WebhookHandler handler = new WebhookHandler("your_webhook_secret");
+
+    @PostMapping("/webhook")
+    public ResponseEntity<Void> webhook(
+            @RequestHeader Map<String, String> httpHeaders,
+            @RequestBody String rawBody,
+            HttpServletRequest request) {
+
+        Map<String, List<String>> headers = new HashMap<>();
+        httpHeaders.forEach((k, v) -> headers.put(k, List.of(v)));
+
+        String url = request.getRequestURL().toString();
+
+        WebhookEvent event = handler.handle(headers, rawBody, url);
+
+        if (event instanceof WebhookEvent.PaymentResult pr) {
+            // paymentRequestId, status, amount 等字段
+            System.out.println(pr.getStatus());
+        }
+        return ResponseEntity.ok().build();
+    }
 }
 ```
 
