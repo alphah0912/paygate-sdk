@@ -1,0 +1,19 @@
+{
+  "name": "@alphah0912/paygate-sdk",
+  "version": "1.0.0",
+  "description": "PayGate TypeScript SDK — Anthom payment gateway client",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": ["paygate", "anthom", "payment", "sdk"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vitest": "^1.1.0"
+  }
+}

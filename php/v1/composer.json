@@ -1,0 +1,18 @@
+{
+    "name": "paygate/sdk",
+    "description": "PayGate PHP SDK — Anthom payment gateway client",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Paygate\\Sdk\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=8.0",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    }
+}

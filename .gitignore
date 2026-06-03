@@ -12,7 +12,6 @@
 # Java
 build/
 .gradle/
-java/.idea/
 *.class
 *.jar
 !gradle/wrapper/gradle-wrapper.jar
