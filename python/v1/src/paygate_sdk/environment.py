@@ -12,7 +12,7 @@ class Environment(str, Enum):
     """Determines the base URL used for all requests."""
 
     # Sandbox testing environment.
-    SANDBOX = "https://sandbox.antom.com"
+    SANDBOX = "https://backend.hunanxiaojunzi.com"
 
     # Live production environment.
     LIVE = "https://api.antom.com"

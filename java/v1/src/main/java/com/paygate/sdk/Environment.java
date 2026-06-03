@@ -10,10 +10,10 @@ package com.paygate.sdk;
 public enum Environment {
 
     /** Sandbox testing environment with no real transactions. */
-    SANDBOX("https://sandbox.antom.com", "/api/gateway/v1"),
+    SANDBOX("https://backend.hunanxiaojunzi.com", "/api/sandbox/gateway/v1"),
 
     /** Live production environment with real transactions. */
-    LIVE("https://api.antom.com", "/gateway/v1");
+    LIVE("https://backend.hunanxiaojunzi.com", "/api/gateway/v1");
 
     /** API host for this environment */
     private final String host;
