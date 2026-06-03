@@ -17,7 +17,7 @@ describe('PaygateClient integration', () => {
     const server = await startServer((req, res) => {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({
-        code: '200', message: 'ok',
+        code: 200, message: 'ok',
         redirectUrl: 'https://checkout.example.com/abc',
         paymentRequestId: 'REQ001',
       }));
@@ -46,7 +46,7 @@ describe('PaygateClient integration', () => {
   it('should throw exception on error response', async () => {
     const server = await startServer((req, res) => {
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ code: '40901', message: 'Invalid payment status' }));
+      res.end(JSON.stringify({ code: 40901, message: 'Invalid payment status' }));
     });
 
     const client = new PaygateClient({
@@ -75,7 +75,7 @@ describe('PaygateClient integration', () => {
       capturedSignature = req.headers['x-signature'] as string || '';
       capturedTimestamp = req.headers['x-timestamp'] as string || '';
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ code: '200', message: 'ok', redirectUrl: 'https://x.com', paymentRequestId: 'X' }));
+      res.end(JSON.stringify({ code: 200, message: 'ok', redirectUrl: 'https://x.com', paymentRequestId: 'X' }));
     });
 
     const client = new PaygateClient({

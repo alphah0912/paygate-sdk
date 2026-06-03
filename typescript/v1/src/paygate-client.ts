@@ -180,9 +180,9 @@ export class PaygateClient {
       throw new PaygateException(ErrorCode.UNKNOWN_ERROR, `Failed to parse response: ${text}`);
     }
 
-    const apiResp = data as unknown as { code?: string; message?: string };
-    if (apiResp.code && apiResp.code !== 200) {
-      throw new PaygateException(apiResp.code, apiResp.message ?? 'Unknown error');
+    const apiResp = data as unknown as { code?: number; message?: string };
+    if (apiResp.code !== undefined && apiResp.code !== 200) {
+      throw new PaygateException(String(apiResp.code), apiResp.message ?? 'Unknown error');
     }
 
     return data;

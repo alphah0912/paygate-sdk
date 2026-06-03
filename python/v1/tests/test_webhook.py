@@ -11,14 +11,13 @@ from paygate_sdk.webhook.types import (
 )
 from paygate_sdk.exception import PaygateException
 
-ISV_SECRET = "isv_webhook_secret"
-MERCHANT_SECRET = "merchant_webhook_secret"
+WEBHOOK_SECRET = "webhook_secret"
 NOTIFY_URL = "https://merchant.example.com/webhook"
 
 
 class TestWebhookHandler:
     def setup_method(self):
-        self.handler = WebhookHandler(ISV_SECRET, MERCHANT_SECRET)
+        self.handler = WebhookHandler(WEBHOOK_SECRET, WEBHOOK_SECRET)
 
     def test_reject_no_headers(self):
         with pytest.raises(PaygateException, match="No webhook signature header"):
@@ -34,7 +33,7 @@ class TestWebhookHandler:
             "message": "支付成功",
         })
         ts = "1700000000000"
-        sig = sign(ISV_SECRET, "POST", NOTIFY_URL, ts, body)
+        sig = sign(WEBHOOK_SECRET, "POST", NOTIFY_URL, ts, body)
 
         event = self.handler.handle(
             {"X-Isv-Signature": sig, "X-Isv-Timestamp": ts}, body, NOTIFY_URL
@@ -59,7 +58,7 @@ class TestWebhookHandler:
             "timestamp": "1700000000000",
         })
         ts = "1700000000000"
-        sig = sign(MERCHANT_SECRET, "POST", NOTIFY_URL, ts, body)
+        sig = sign(WEBHOOK_SECRET, "POST", NOTIFY_URL, ts, body)
 
         event = self.handler.handle(
             {"X-Webhook-Signature": sig, "X-Webhook-Timestamp": ts}, body, NOTIFY_URL
@@ -83,7 +82,7 @@ class TestWebhookHandler:
             "timestamp": "1700000000000",
         })
         ts = "1700000000000"
-        sig = sign(MERCHANT_SECRET, "POST", NOTIFY_URL, ts, body)
+        sig = sign(WEBHOOK_SECRET, "POST", NOTIFY_URL, ts, body)
         event = self.handler.handle(
             {"X-Webhook-Signature": sig, "X-Webhook-Timestamp": ts}, body, NOTIFY_URL
         )
@@ -98,7 +97,7 @@ class TestWebhookHandler:
             "timestamp": "1700000000000",
         })
         ts = "1700000000000"
-        sig = sign(MERCHANT_SECRET, "POST", NOTIFY_URL, ts, body)
+        sig = sign(WEBHOOK_SECRET, "POST", NOTIFY_URL, ts, body)
         event = self.handler.handle(
             {"X-Webhook-Signature": sig, "X-Webhook-Timestamp": ts}, body, NOTIFY_URL
         )
@@ -108,7 +107,7 @@ class TestWebhookHandler:
     def test_unknown_type(self):
         body = json.dumps({"type": "unknown.event", "timestamp": "1700000000000"})
         ts = "1700000000000"
-        sig = sign(MERCHANT_SECRET, "POST", NOTIFY_URL, ts, body)
+        sig = sign(WEBHOOK_SECRET, "POST", NOTIFY_URL, ts, body)
         with pytest.raises(PaygateException, match="Unknown webhook event type"):
             self.handler.handle(
                 {"X-Webhook-Signature": sig, "X-Webhook-Timestamp": ts}, body, NOTIFY_URL
