@@ -76,6 +76,46 @@ const resp = await client.pay({
 
 更多见 [typescript/v1/examples/](typescript/v1/examples/) 和 [typescript/README.md](typescript/README.md)。
 
+## Python 快速接入
+
+```bash
+pip install paygate-sdk
+```
+
+```python
+from paygate_sdk import PaygateClient, Environment
+
+client = PaygateClient("mk_test_xxx", "your_api_secret", Environment.SANDBOX)
+resp = client.pay(PayRequest(
+    amount="100.00", payment_method_code="ALIPAY_CN",
+    terminal_type="WEB", settlement_currency="USD"
+))
+```
+
+## Go 快速接入
+
+```bash
+go get github.com/alphah0912/paygate-sdk/go@v1.0.0
+```
+
+```go
+import "github.com/alphah0912/paygate-sdk/go/client"
+
+c := client.New("mk_test_key", "test_secret", client.SANDBOX)
+resp, _ := c.Pay(client.PayRequest{Amount: "100.00", PaymentMethodCode: "ALIPAY_CN", TerminalType: "WEB", SettlementCurrency: "USD"})
+```
+
+## PHP 快速接入
+
+```bash
+composer require paygate/sdk
+```
+
+```php
+$client = new Paygate\Sdk\PaygateClient('mk_test_key', 'test_secret', Environment::SANDBOX);
+$resp = $client->pay(['amount' => '100.00', 'paymentMethodCode' => 'ALIPAY_CN', 'terminalType' => 'WEB', 'settlementCurrency' => 'USD']);
+```
+
 ## 接口覆盖
 
 | 方法   | 路径                | 说明     |
