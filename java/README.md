@@ -10,14 +10,14 @@ PayGate Java client SDK. JDK 8+, 零 HTTP 依赖，一个 Jackson。
 <dependency>
     <groupId>io.github.alphah0912</groupId>
     <artifactId>paygate-sdk</artifactId>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation 'io.github.alphah0912:paygate-sdk:1.0.2'
+implementation 'io.github.alphah0912:paygate-sdk:1.0.3'
 ```
 
 ## 快速开始
@@ -53,7 +53,7 @@ System.out.println(resp.getRedirectUrl());
 ## Webhook 接收
 
 ```java
-WebhookHandler handler = new WebhookHandler("isv_secret", "merchant_secret");
+WebhookHandler handler = new WebhookHandler("webhook_secret");
 
 WebhookEvent event = handler.handle(headers, body, "https://merchant.com/webhook");
 if (event instanceof WebhookEvent.PaymentResult pr) {
