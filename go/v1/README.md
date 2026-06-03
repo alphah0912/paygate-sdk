@@ -37,10 +37,31 @@ resp, err := c.Pay(client.PayRequest{
 ## Webhook
 
 ```go
-import "github.com/alphah0912/paygate-sdk/go/webhook"
+package main
 
-h := webhook.NewHandler("isv_secret", "merchant_secret")
-event, err := h.Handle(headers, body, "https://merchant.com/webhook")
+import (
+    "io"
+    "net/http"
+    "github.com/alphah0912/paygate-sdk/go/v1/webhook"
+)
+
+var h = webhook.NewHandler("your_webhook_secret")
+
+func webhookHandler(w http.ResponseWriter, r *http.Request) {
+    body, _ := io.ReadAll(r.Body)
+    event, err := h.Handle(r.Header, string(body), "https://"+r.Host+r.URL.String())
+    if err != nil {
+        http.Error(w, err.Error(), 401)
+        return
+    }
+    _ = event
+    w.WriteHeader(200)
+}
+
+func main() {
+    http.HandleFunc("/webhook", webhookHandler)
+    http.ListenAndServe(":8080", nil)
+}
 ```
 
 ## 本地开发

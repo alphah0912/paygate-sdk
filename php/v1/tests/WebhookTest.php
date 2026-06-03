@@ -6,8 +6,7 @@ use Paygate\Sdk\webhook\WebhookHandler;
 
 class WebhookTest extends TestCase
 {
-    private string $isvSecret = 'isv_webhook_secret';
-    private string $merchantSecret = 'merchant_webhook_secret';
+    private string $webhookSecret = 'webhook_secret';
     private string $notifyUrl = 'https://merchant.example.com/webhook';
 
     public function testRejectNoHeaders(): void
