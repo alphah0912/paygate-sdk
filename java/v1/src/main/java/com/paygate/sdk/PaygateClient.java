@@ -195,7 +195,7 @@ public class PaygateClient {
             if (response instanceof ApiResponse) {
                 ApiResponse ar = (ApiResponse) response;
                 if (!ar.isSuccess()) {
-                    throw new PaygateException(ar.getCode(), ar.getMessage());
+                    throw new PaygateException(String.valueOf(ar.getCode()), ar.getMessage());
                 }
             }
 

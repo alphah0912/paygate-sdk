@@ -23,7 +23,7 @@ import java.util.Map;
  * <p>Sign string format (aligned with platform): {@code POST\n{notifyUrl}\n{timestamp}\n{body}}
  *
  * <pre>{@code
- * WebhookHandler handler = new WebhookHandler("isv_secret", "merchant_webhook_secret");
+ * WebhookHandler handler = new WebhookHandler("webhook_secret");
  * WebhookEvent event = handler.handle(headers, body, "https://merchant.com/webhook");
  * }</pre>
  *
@@ -57,18 +57,18 @@ public class WebhookHandler {
     /**
      * Platform ISV webhook secret for HMAC-SHA256 verification
      */
-    private final String isvWebhookSecret;
+    private final String webhookSecret;
     /**
      * Merchant's own webhook secret for NotificationService HMAC verification
      */
     private final String merchantWebhookSecret;
 
     /**
-     * @param isvWebhookSecret      platform ISV webhook secret for HMAC verification
+     * @param webhookSecret      platform ISV webhook secret for HMAC verification
      * @param merchantWebhookSecret merchant's own webhook secret for NotificationService verification
      */
-    public WebhookHandler(String isvWebhookSecret, String merchantWebhookSecret) {
-        this.isvWebhookSecret = isvWebhookSecret;
+    public WebhookHandler(String webhookSecret, String merchantWebhookSecret) {
+        this.webhookSecret = webhookSecret;
         this.merchantWebhookSecret = merchantWebhookSecret;
     }
 
@@ -102,7 +102,7 @@ public class WebhookHandler {
         }
 
         // Platform signs with "POST\n{notifyUrl}\n{timestamp}\n{body}" (full URL, not just path)
-        boolean valid = SignatureUtil.verify(isvWebhookSecret, sigHeader, "POST", notifyUrl, tsHeader, body);
+        boolean valid = SignatureUtil.verify(webhookSecret, sigHeader, "POST", notifyUrl, tsHeader, body);
         if (!valid) {
             throw new PaygateException(ErrorCode.INVALID_SIGNATURE.getCode(), "ISV webhook signature mismatch");
         }

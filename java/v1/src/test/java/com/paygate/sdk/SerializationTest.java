@@ -79,7 +79,7 @@ class SerializationTest {
         PayResponse resp = MAPPER.readValue(json, PayResponse.class);
 
         assertThat(resp.isSuccess()).isFalse();
-        assertThat(resp.getCode()).isEqualTo("40001");
+        assertThat(resp.getCode()).isEqualTo(40001);
     }
 
     @Test

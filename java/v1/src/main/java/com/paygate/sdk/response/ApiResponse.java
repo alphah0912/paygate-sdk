@@ -17,7 +17,7 @@ public abstract class ApiResponse {
     /**
      * Response code from the API, "200" indicates success
      */
-    private String code;
+    private int code;
 
     /**
      * Human-readable message accompanying the response code
@@ -27,11 +27,11 @@ public abstract class ApiResponse {
     /**
      * @return response code, "200" means success
      */
-    public String getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
@@ -50,6 +50,6 @@ public abstract class ApiResponse {
      * @return true if the response code indicates success
      */
     public boolean isSuccess() {
-        return "200".equals(code);
+        return code == 200;
     }
 }
