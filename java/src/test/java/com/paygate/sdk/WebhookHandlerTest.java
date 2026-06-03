@@ -4,6 +4,7 @@ import com.paygate.sdk.webhook.WebhookEvent;
 import com.paygate.sdk.webhook.WebhookHandler;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,8 +36,8 @@ class WebhookHandlerTest {
         String sig = SignatureUtil.sign(ISV_SECRET, "POST", path, timestamp, body);
 
         Map<String, List<String>> headers = new HashMap<>();
-        headers.put("X-Isv-Signature", List.of(sig));
-        headers.put("X-Isv-Timestamp", List.of(timestamp));
+        headers.put("X-Isv-Signature", Collections.singletonList(sig));
+        headers.put("X-Isv-Timestamp", Collections.singletonList(timestamp));
 
         WebhookEvent event = handler.handle(headers, body, path);
 
@@ -52,8 +53,8 @@ class WebhookHandlerTest {
         String path = "/webhook";
 
         Map<String, List<String>> headers = new HashMap<>();
-        headers.put("X-Isv-Signature", List.of("sha256=invalid"));
-        headers.put("X-Isv-Timestamp", List.of("1700000000000"));
+        headers.put("X-Isv-Signature", Collections.singletonList("sha256=invalid"));
+        headers.put("X-Isv-Timestamp", Collections.singletonList("1700000000000"));
 
         assertThatThrownBy(() -> handler.handle(headers, body, path))
                 .isInstanceOf(PaygateException.class)
@@ -65,7 +66,7 @@ class WebhookHandlerTest {
         String body = "{\"type\":\"sign.success\",\"referenceMerchantId\":\"M001\",\"message\":\"签约成功\",\"timestamp\":\"2024-01-01T00:00:00Z\"}";
 
         Map<String, List<String>> headers = new HashMap<>();
-        headers.put("X-Webhook-Secret", List.of(NOTIFY_SECRET));
+        headers.put("X-Webhook-Secret", Collections.singletonList(NOTIFY_SECRET));
 
         WebhookEvent event = handler.handle(headers, body, "/webhook");
 
@@ -79,7 +80,7 @@ class WebhookHandlerTest {
         String body = "{\"type\":\"sign.success\"}";
 
         Map<String, List<String>> headers = new HashMap<>();
-        headers.put("X-Webhook-Secret", List.of("wrong_secret"));
+        headers.put("X-Webhook-Secret", Collections.singletonList("wrong_secret"));
 
         assertThatThrownBy(() -> handler.handle(headers, body, "/webhook"))
                 .isInstanceOf(PaygateException.class)
@@ -91,7 +92,7 @@ class WebhookHandlerTest {
         String body = "{\"type\":\"payment.completed\",\"platformTradeNo\":\"T001\",\"status\":\"SUCCESS\",\"timestamp\":\"2024-01-01T00:00:00Z\"}";
 
         Map<String, List<String>> headers = new HashMap<>();
-        headers.put("X-Webhook-Secret", List.of(NOTIFY_SECRET));
+        headers.put("X-Webhook-Secret", Collections.singletonList(NOTIFY_SECRET));
 
         WebhookEvent event = handler.handle(headers, body, "/webhook");
 
@@ -105,7 +106,7 @@ class WebhookHandlerTest {
         String body = "{\"type\":\"refund.completed\",\"refundTradeNo\":\"R001\",\"status\":\"SUCCESS\",\"timestamp\":\"2024-01-01T00:00:00Z\"}";
 
         Map<String, List<String>> headers = new HashMap<>();
-        headers.put("X-Webhook-Secret", List.of(NOTIFY_SECRET));
+        headers.put("X-Webhook-Secret", Collections.singletonList(NOTIFY_SECRET));
 
         WebhookEvent event = handler.handle(headers, body, "/webhook");
 
@@ -119,7 +120,7 @@ class WebhookHandlerTest {
         String body = "{\"type\":\"unknown.event\"}";
 
         Map<String, List<String>> headers = new HashMap<>();
-        headers.put("X-Webhook-Secret", List.of(NOTIFY_SECRET));
+        headers.put("X-Webhook-Secret", Collections.singletonList(NOTIFY_SECRET));
 
         assertThatThrownBy(() -> handler.handle(headers, body, "/webhook"))
                 .isInstanceOf(PaygateException.class)
