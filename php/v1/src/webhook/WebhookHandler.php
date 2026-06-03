@@ -24,7 +24,7 @@ class WebhookHandler
     public function __construct(string $isvWebhookSecret, ?string $merchantWebhookSecret)
     {
         $this->isvSecret = $isvWebhookSecret;
-        $this->merchantSecret = $merchantWebhookSecret;
+        $this->secret = $merchantWebhookSecret;
     }
 
     /**
@@ -72,11 +72,11 @@ class WebhookHandler
         // Platform sends signature only when a secret is configured.
         // If sig present, secret must be configured and must pass verification.
         if ($sig && $ts) {
-            if (!$this->merchantSecret) {
+            if (!$this->secret) {
                 throw new PaygateException(ErrorCode::INVALID_SIGNATURE,
                     'Webhook signature received but no merchant secret configured');
             }
-            if (!Signature::verify($this->merchantSecret, $sig, 'POST', $url, $ts, $body)) {
+            if (!Signature::verify($this->secret, $sig, 'POST', $url, $ts, $body)) {
                 throw new PaygateException(ErrorCode::INVALID_SIGNATURE, 'Webhook signature mismatch');
             }
         }

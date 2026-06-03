@@ -8,21 +8,20 @@ import (
 )
 
 const (
-	isvSigHeader  = "X-Isv-Signature"
-	isvTsHeader   = "X-Isv-Timestamp"
-	whSigHeader   = "X-Webhook-Signature"
-	whTsHeader    = "X-Webhook-Timestamp"
+	isvSigHeader = "X-Isv-Signature"
+	isvTsHeader  = "X-Isv-Timestamp"
+	whSigHeader  = "X-Webhook-Signature"
+	whTsHeader   = "X-Webhook-Timestamp"
 )
 
 // Handler processes incoming webhook notifications.
 type Handler struct {
-	isvSecret      string
-	merchantSecret string
+	secret string
 }
 
 // NewHandler creates a new WebhookHandler.
-func NewHandler(isvSecret, merchantSecret string) *Handler {
-	return &Handler{isvSecret: isvSecret, merchantSecret: merchantSecret}
+func NewHandler(secret string) *Handler {
+	return &Handler{secret: secret}
 }
 
 // Handle processes an incoming webhook request.
@@ -42,7 +41,10 @@ func (h *Handler) handleISV(headers map[string][]string, body, notifyURL string)
 	if sig == "" || ts == "" {
 		return nil, client.NewPaygateError(client.ErrInvalidSignature, "Missing ISV webhook signature headers")
 	}
-	if !client.Verify(h.isvSecret, sig, "POST", notifyURL, ts, body) {
+	if h.secret == "" {
+		return nil, client.NewPaygateError(client.ErrInvalidSignature, "Webhook secret not configured")
+	}
+	if !client.Verify(h.secret, sig, "POST", notifyURL, ts, body) {
 		return nil, client.NewPaygateError(client.ErrInvalidSignature, "ISV webhook signature mismatch")
 	}
 	var evt PaymentResult
@@ -55,13 +57,11 @@ func (h *Handler) handleISV(headers map[string][]string, body, notifyURL string)
 func (h *Handler) handleNotification(headers map[string][]string, body, notifyURL string) (Event, error) {
 	sig := first(headers, whSigHeader)
 	ts := first(headers, whTsHeader)
-	// Platform sends signature only when a secret is configured.
-	// If sig present, secret must be configured and must pass verification.
 	if sig != "" && ts != "" {
-		if h.merchantSecret == "" {
-			return nil, client.NewPaygateError(client.ErrInvalidSignature, "Webhook signature received but no merchant secret configured")
+		if h.secret == "" {
+			return nil, client.NewPaygateError(client.ErrInvalidSignature, "Webhook signature received but no secret configured")
 		}
-		if !client.Verify(h.merchantSecret, sig, "POST", notifyURL, ts, body) {
+		if !client.Verify(h.secret, sig, "POST", notifyURL, ts, body) {
 			return nil, client.NewPaygateError(client.ErrInvalidSignature, "Webhook signature mismatch")
 		}
 	}

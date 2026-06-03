@@ -12,14 +12,14 @@ class WebhookTest extends TestCase
 
     public function testRejectNoHeaders(): void
     {
-        $handler = new WebhookHandler($this->isvSecret, $this->merchantSecret);
+        $handler = new WebhookHandler($this->isvSecret);
         $this->expectException(\Paygate\Sdk\PaygateException::class);
         $handler->handle([], '{}', $this->notifyUrl);
     }
 
     public function testISVValidSignature(): void
     {
-        $handler = new WebhookHandler($this->isvSecret, $this->merchantSecret);
+        $handler = new WebhookHandler($this->isvSecret);
         $body = json_encode([
             'paymentRequestId' => 'REQ123',
             'status' => 'SUCCESS',
