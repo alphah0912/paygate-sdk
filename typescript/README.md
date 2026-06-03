@@ -5,7 +5,9 @@ PayGate TypeScript client SDK. Node.js 18+, 零外部依赖。
 ## 安装
 
 ```bash
-npm install github:alphah0912/paygate-sdk
+git clone https://github.com/alphah0912/paygate-sdk.git
+cd your-project
+npm install ../paygate-sdk/typescript/v1
 ```
 
 ## 快速开始
