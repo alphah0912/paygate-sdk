@@ -23,7 +23,7 @@ import java.util.Map;
 public class WebhookServerExample {
 
     public static void main(String[] args) throws IOException {
-        WebhookHandler handler = new WebhookHandler("isv_webhook_secret", "notify_secret");
+        WebhookHandler handler = new WebhookHandler("webhook_secret");
 
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/webhook", exchange -> {
