@@ -14,11 +14,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class WebhookHandlerTest {
 
-    private static final String ISV_SECRET = "isv_webhook_secret";
-    private static final String MERCHANT_SECRET = "merchant_webhook_secret";
+    private static final String WEBHOOK_SECRET = "webhook_secret";
     private static final String NOTIFY_URL = "https://merchant.example.com/webhook";
 
-    private final WebhookHandler handler = new WebhookHandler(ISV_SECRET, MERCHANT_SECRET);
+    private final WebhookHandler handler = new WebhookHandler(WEBHOOK_SECRET);
 
     @Test
     void shouldRejectRequestWithoutWebhookHeaders() {
@@ -32,7 +31,7 @@ class WebhookHandlerTest {
     void shouldVerifyIsvWebhookWithValidSignature() {
         String body = "{\"paymentRequestId\":\"REQ123\",\"status\":\"SUCCESS\",\"amount\":\"100.00\",\"currency\":\"USD\",\"tradeTime\":\"2024-01-01T00:00:00Z\",\"message\":\"支付成功\"}";
         String timestamp = "1700000000000";
-        String sig = SignatureUtil.sign(ISV_SECRET, "POST", NOTIFY_URL, timestamp, body);
+        String sig = SignatureUtil.sign(WEBHOOK_SECRET, "POST", NOTIFY_URL, timestamp, body);
 
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("X-Isv-Signature", Collections.singletonList(sig));
@@ -63,7 +62,7 @@ class WebhookHandlerTest {
     void shouldHandleNotificationSignSuccessEvent() {
         String body = "{\"type\":\"sign.success\",\"referenceMerchantId\":\"M001\",\"message\":\"签约成功\",\"timestamp\":\"1700000000000\"}";
         String timestamp = "1700000000000";
-        String sig = SignatureUtil.sign(MERCHANT_SECRET, "POST", NOTIFY_URL, timestamp, body);
+        String sig = SignatureUtil.sign(WEBHOOK_SECRET, "POST", NOTIFY_URL, timestamp, body);
 
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("X-Webhook-Signature", Collections.singletonList(sig));
@@ -93,7 +92,7 @@ class WebhookHandlerTest {
     void shouldHandlePaymentCompletedEvent() {
         String body = "{\"type\":\"payment.completed\",\"platformTradeNo\":\"T001\",\"status\":\"SUCCESS\",\"timestamp\":\"1700000000000\"}";
         String timestamp = "1700000000000";
-        String sig = SignatureUtil.sign(MERCHANT_SECRET, "POST", NOTIFY_URL, timestamp, body);
+        String sig = SignatureUtil.sign(WEBHOOK_SECRET, "POST", NOTIFY_URL, timestamp, body);
 
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("X-Webhook-Signature", Collections.singletonList(sig));
@@ -110,7 +109,7 @@ class WebhookHandlerTest {
     void shouldHandleRefundCompletedEvent() {
         String body = "{\"type\":\"refund.completed\",\"refundTradeNo\":\"R001\",\"status\":\"SUCCESS\",\"timestamp\":\"1700000000000\"}";
         String timestamp = "1700000000000";
-        String sig = SignatureUtil.sign(MERCHANT_SECRET, "POST", NOTIFY_URL, timestamp, body);
+        String sig = SignatureUtil.sign(WEBHOOK_SECRET, "POST", NOTIFY_URL, timestamp, body);
 
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("X-Webhook-Signature", Collections.singletonList(sig));
@@ -127,7 +126,7 @@ class WebhookHandlerTest {
     void shouldRejectUnknownNotificationType() {
         String body = "{\"type\":\"unknown.event\",\"timestamp\":\"1700000000000\"}";
         String timestamp = "1700000000000";
-        String sig = SignatureUtil.sign(MERCHANT_SECRET, "POST", NOTIFY_URL, timestamp, body);
+        String sig = SignatureUtil.sign(WEBHOOK_SECRET, "POST", NOTIFY_URL, timestamp, body);
 
         Map<String, List<String>> headers = new HashMap<>();
         headers.put("X-Webhook-Signature", Collections.singletonList(sig));
