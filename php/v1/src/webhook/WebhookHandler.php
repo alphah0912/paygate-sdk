@@ -9,33 +9,20 @@ use Paygate\Sdk\Signature;
 /**
  * Handles incoming webhook notifications from the PayGate platform.
  *
- * Two webhook types, both using HMAC-SHA256:
- * - ISV Webhook: headers X-Isv-Signature + X-Isv-Timestamp.
- * - NotificationService: headers X-Webhook-Signature + X-Webhook-Timestamp.
+ * Both ISV and NotificationService webhooks share the same secret.
  *
  * @author alphah
  * @since 1.0.0
  */
 class WebhookHandler
 {
-    private string $isvSecret;
-    private ?string $merchantSecret;
+    private ?string $secret;
 
-    public function __construct(string $isvWebhookSecret, ?string $merchantWebhookSecret)
+    public function __construct(?string $webhookSecret)
     {
-        $this->isvSecret = $isvWebhookSecret;
-        $this->secret = $merchantWebhookSecret;
+        $this->secret = $webhookSecret;
     }
 
-    /**
-     * Process an incoming webhook request.
-     *
-     * @param array<string, array<string>> $headers Request headers (multi-valued).
-     * @param string $body Raw JSON request body.
-     * @param string $notifyUrl Full URL the webhook was sent to.
-     * @return array Parsed event data.
-     * @throws PaygateException
-     */
     public function handle(array $headers, string $body, string $notifyUrl): array
     {
         if (isset($headers['X-Isv-Signature'])) {
@@ -54,7 +41,10 @@ class WebhookHandler
         if (!$sig || !$ts) {
             throw new PaygateException(ErrorCode::INVALID_SIGNATURE, 'Missing ISV webhook signature headers');
         }
-        if (!Signature::verify($this->isvSecret, $sig, 'POST', $url, $ts, $body)) {
+        if (!$this->secret) {
+            throw new PaygateException(ErrorCode::INVALID_SIGNATURE, 'Webhook secret not configured');
+        }
+        if (!Signature::verify($this->secret, $sig, 'POST', $url, $ts, $body)) {
             throw new PaygateException(ErrorCode::INVALID_SIGNATURE, 'ISV webhook signature mismatch');
         }
         $data = json_decode($body, true);
@@ -69,12 +59,10 @@ class WebhookHandler
         $sig = $headers['X-Webhook-Signature'][0] ?? null;
         $ts = $headers['X-Webhook-Timestamp'][0] ?? null;
 
-        // Platform sends signature only when a secret is configured.
-        // If sig present, secret must be configured and must pass verification.
         if ($sig && $ts) {
             if (!$this->secret) {
                 throw new PaygateException(ErrorCode::INVALID_SIGNATURE,
-                    'Webhook signature received but no merchant secret configured');
+                    'Webhook signature received but no secret configured');
             }
             if (!Signature::verify($this->secret, $sig, 'POST', $url, $ts, $body)) {
                 throw new PaygateException(ErrorCode::INVALID_SIGNATURE, 'Webhook signature mismatch');
