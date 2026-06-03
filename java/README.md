@@ -2,7 +2,7 @@
 
 PayGate Java client SDK. JDK 8+, 零 HTTP 依赖，一个 Jackson。
 
-## 依赖
+## 安装
 
 ### Maven
 
@@ -10,37 +10,31 @@ PayGate Java client SDK. JDK 8+, 零 HTTP 依赖，一个 Jackson。
 <dependency>
     <groupId>io.github.alphah0912</groupId>
     <artifactId>paygate-sdk</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
 ### Gradle
 
 ```groovy
-implementation 'io.github.alphah0912:paygate-sdk:1.0.0'
+implementation 'io.github.alphah0912:paygate-sdk:1.0.1'
 ```
 
 ## 快速开始
 
 ```java
-import com.paygate.sdk.PaygateClient;
-import com.paygate.sdk.Environment;
-import com.paygate.sdk.request.PayRequest;
-
 PaygateClient client = PaygateClient.builder()
     .apiKey("mk_test_your_api_key")
     .apiSecret("your_api_secret")
     .environment(Environment.SANDBOX)
     .build();
 
-PayResponse resp = client.pay(
-    PayRequest.builder()
-        .amount("100.00")
-        .paymentMethodCode("ALIPAY_CN")
-        .terminalType("WEB")
-        .settlementCurrency("USD")
-        .build()
-);
+PayResponse resp = client.pay(PayRequest.builder()
+    .amount("100.00")
+    .paymentMethodCode("ALIPAY_CN")
+    .terminalType("WEB")
+    .settlementCurrency("USD")
+    .build());
 
 System.out.println(resp.getRedirectUrl());
 ```
@@ -49,29 +43,21 @@ System.out.println(resp.getRedirectUrl());
 
 | 方法 | 参数 | 返回值 |
 |------|------|--------|
-| `client.pay(request)` | PayRequest | PayResponse |
-| `client.capture(request)` | CaptureRequest | CaptureResponse |
-| `client.cancel(request)` | CancelRequest | CancelResponse |
-| `client.inquiryPayment(request)` | InquiryPaymentRequest | InquiryPaymentResponse |
-| `client.inquiryRefund(request)` | InquiryRefundRequest | InquiryRefundResponse |
-| `client.refund(request)` | RefundRequest | RefundResponse |
+| `client.pay(req)` | PayRequest | PayResponse |
+| `client.capture(req)` | CaptureRequest | CaptureResponse |
+| `client.cancel(req)` | CancelRequest | CancelResponse |
+| `client.inquiryPayment(req)` | InquiryPaymentRequest | InquiryPaymentResponse |
+| `client.inquiryRefund(req)` | InquiryRefundRequest | InquiryRefundResponse |
+| `client.refund(req)` | RefundRequest | RefundResponse |
 
 ## Webhook 接收
 
 ```java
-import com.paygate.sdk.webhook.WebhookHandler;
-import com.paygate.sdk.webhook.WebhookEvent;
+WebhookHandler handler = new WebhookHandler("isv_secret", "merchant_secret");
 
-WebhookHandler handler = new WebhookHandler("isv_secret", "notify_secret");
-
-// 在你的 Controller 里
-@PostMapping("/webhook")
-public void webhook(@RequestHeader Map<String, String> headers, @RequestBody String body) {
-    WebhookEvent event = handler.handle(headers, body, "/webhook");
-    if (event instanceof WebhookEvent.PaymentResult) {
-        WebhookEvent.PaymentResult pr = (WebhookEvent.PaymentResult) event;
-        System.out.println(pr.getStatus());
-    }
+WebhookEvent event = handler.handle(headers, body, "https://merchant.com/webhook");
+if (event instanceof WebhookEvent.PaymentResult pr) {
+    System.out.println(pr.getStatus());
 }
 ```
 
@@ -81,15 +67,13 @@ public void webhook(@RequestHeader Map<String, String> headers, @RequestBody Str
 try {
     client.pay(request);
 } catch (PaygateException e) {
-    System.out.println(e.getErrorCode());    // "40001"
-    System.out.println(e.getMessage());      // "Invalid API key"
-    System.out.println(e.getErrorCodeEnum()); // ErrorCode.INVALID_API_KEY
+    e.getErrorCode();   // "40001"
+    e.getMessage();     // "Invalid API key"
 }
 ```
 
 ## 本地开发
 
 ```bash
-./gradlew test      # 运行测试
-./gradlew build     # 编译
+cd java/v1 && ./gradlew test
 ```

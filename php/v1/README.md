@@ -17,9 +17,9 @@ use Paygate\Sdk\Environment;
 $client = new PaygateClient('mk_test_key', 'test_secret', Environment::SANDBOX);
 
 $resp = $client->pay([
-    'amount' => '100.00',
-    'paymentMethodCode' => 'ALIPAY_CN',
-    'terminalType' => 'WEB',
+    'amount'             => '100.00',
+    'paymentMethodCode'  => 'ALIPAY_CN',
+    'terminalType'       => 'WEB',
     'settlementCurrency' => 'USD',
 ]);
 
@@ -54,14 +54,13 @@ use Paygate\Sdk\PaygateException;
 try {
     $client->pay($req);
 } catch (PaygateException $e) {
-    echo $e->getErrorCode();  // "40001"
-    echo $e->getMessage();    // "Invalid API key"
+    echo $e->getErrorCode(); // "40001"
+    echo $e->getMessage();   // "Invalid API key"
 }
 ```
 
 ## 本地开发
 
 ```bash
-composer install
-vendor/bin/phpunit tests/
+cd php/v1 && composer install && vendor/bin/phpunit tests/
 ```

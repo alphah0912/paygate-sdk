@@ -43,3 +43,4 @@ signing-key.asc
 # OS
 .DS_Store
 Thumbs.db
+central-bundle.zip
