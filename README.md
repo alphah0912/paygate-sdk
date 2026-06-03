@@ -7,10 +7,10 @@
 ```
 paygate-sdk/
   java/v1/        → Java SDK   `io.github.alphah0912:paygate-sdk:1.0.1` (Maven Central)
-  typescript/v1/  → TypeScript SDK   `npm install ...`
-  python/v1/      → Python SDK       `pip install paygate-sdk`
+  typescript/v1/  → TypeScript SDK   `npm i github:alphah0912/paygate-sdk#typescript/v1.0.0`
+  python/v1/      → Python SDK       `pip install git+...@python/v1.0.0`
   php/v1/         → PHP SDK          `composer require paygate/sdk`
-  go/v1/          → Go SDK           `go get github.com/...`
+  go/v1/          → Go SDK           `go get github.com/alphah0912/paygate-sdk/go@v1.0.0`
   spec/           → 跨语言统一错误码定义
 ```
 

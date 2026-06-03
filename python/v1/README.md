@@ -5,7 +5,7 @@ Python 3.8+. 单依赖 `httpx`.
 ## 安装
 
 ```bash
-pip install paygate-sdk
+pip install git+https://github.com/alphah0912/paygate-sdk.git@python/v1.0.0#subdirectory=python/v1
 ```
 
 ## 快速开始
