@@ -6,11 +6,11 @@
 
 ```
 paygate-sdk/
-  java/v1/        # Java SDK v1
-  typescript/v1/  # TypeScript SDK v1
-  python/v1/      # Python SDK v1（待开发）
-  php/v1/         # PHP SDK v1（待开发）
-  go/v1/          # Go SDK v1（待开发）
+  java/v1/        # Java SDK
+  typescript/v1/  # TypeScript SDK
+  python/v1/      # Python SDK
+  php/v1/         # PHP SDK
+  go/v1/          # Go SDK
   spec/           # 跨语言统一错误码
 ```
 
@@ -18,11 +18,11 @@ paygate-sdk/
 
 | 语言 | 包名 | 发布渠道 | 状态 |
 |------|------|----------|------|
-| Java | `io.github.alphah0912:paygate-sdk:1.0.0` | Maven Central | ✅ |
-| TypeScript | `@alphah0912/paygate-sdk` | npm | ✅ |
-| Python | `paygate-sdk` | pip | 🚧 |
-| PHP | `paygate/sdk` | Composer | 🚧 |
-| Go | `paygate-sdk-go` | `go get` | 🚧 |
+| Java | `io.github.alphah0912:paygate-sdk:1.0.1` | Maven Central | ✅ |
+| TypeScript | `@alphah0912/paygate-sdk` | npm / git source | ✅ |
+| Python | `paygate-sdk` | pip / git source | ✅ |
+| PHP | `paygate/sdk` | Composer / git source | ✅ |
+| Go | `github.com/alphah0912/paygate-sdk/go` | `go get` | ✅ |
 
 ## Java 快速接入
 
@@ -30,7 +30,7 @@ paygate-sdk/
 <dependency>
     <groupId>io.github.alphah0912</groupId>
     <artifactId>paygate-sdk</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
@@ -56,7 +56,7 @@ PayResponse resp = client.pay(
 ## TypeScript 快速接入
 
 ```bash
-npm install github:alphah0912/paygate-sdk#typescript/v1
+npm install github:alphah0912/paygate-sdk#typescript/v1.0.0
 ```
 
 ```ts
