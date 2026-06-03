@@ -11,10 +11,10 @@ namespace Paygate\Sdk;
 class Environment
 {
     /** Sandbox testing environment. */
-    const SANDBOX = ['host' => 'https://sandbox.antom.com', 'basePath' => '/api/gateway/v1'];
+    const SANDBOX = ['host' => 'https://sandbox.backend.hunanxiaojunzi.com', 'basePath' => '/api/sandbox/gateway/v1'];
 
     /** Live production environment. */
-    const LIVE = ['host' => 'https://api.antom.com', 'basePath' => '/gateway/v1'];
+    const LIVE = ['host' => 'https://api.backend.hunanxiaojunzi.com', 'basePath' => '/api/gateway/v1'];
 
     public static function baseUrl(array $env): string
     {

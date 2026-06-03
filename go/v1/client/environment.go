@@ -8,9 +8,9 @@ type Environment struct {
 
 var (
 	// Sandbox testing environment.
-	SANDBOX = Environment{"https://sandbox.antom.com", "/api/gateway/v1"}
+	SANDBOX = Environment{"https://backend.hunanxiaojunzi.com", "/api/sandbox/gateway/v1"}
 	// Live production environment.
-	LIVE = Environment{"https://api.antom.com", "/gateway/v1"}
+	LIVE = Environment{"https://backend.hunanxiaojunzi.com", "/api/gateway/v1"}
 )
 
 // BaseURL returns the full API base URL.
