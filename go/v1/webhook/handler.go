@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/alphah0912/paygate-sdk/go/client"
+	"github.com/alphah0912/paygate-sdk/go/v1/client"
 )
 
 const (
