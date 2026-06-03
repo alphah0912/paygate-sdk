@@ -42,8 +42,16 @@ echo $resp['redirectUrl'];
 ```php
 use Paygate\Sdk\webhook\WebhookHandler;
 
-$handler = new WebhookHandler('isv_secret', 'merchant_secret');
-$event = $handler->handle($headers, file_get_contents('php://input'), 'https://merchant.com/webhook');
+// 在你的 PHP  Controller / 入口文件里
+$handler = new WebhookHandler('your_webhook_secret');
+
+$headers = getallheaders();
+$body    = file_get_contents('php://input');
+$url     = ($_SERVER['HTTPS'] ?? 'off') === 'on' ? 'https://' : 'http://'
+         . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+
+$event = $handler->handle($headers, $body, $url);
+// $event['paymentRequestId'], $event['status'] 等字段
 ```
 
 ## 错误处理

@@ -5,13 +5,13 @@ Go 1.20+. 零外部依赖，标准库 `net/http`。
 ## 安装
 
 ```bash
-go get github.com/alphah0912/paygate-sdk/go@v1.0.0
+go get github.com/alphah0912/paygate-sdk/go/v1@v1.0.0
 ```
 
 ## 快速开始
 
 ```go
-import "github.com/alphah0912/paygate-sdk/go/client"
+import "github.com/alphah0912/paygate-sdk/go/v1/client"
 
 c := client.New("mk_test_key", "test_secret", client.SANDBOX)
 
