@@ -1,9 +1,10 @@
 plugins {
     id 'java-library'
     id 'maven-publish'
+    id 'signing'
 }
 
-group = 'com.github.alphah0912'
+group = 'io.github.alphah0912'
 version = '1.0.0'
 
 java {
@@ -30,10 +31,63 @@ test {
     useJUnitPlatform()
 }
 
+task sourcesJar(type: Jar) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+javadoc {
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.encoding = 'UTF-8'
+}
+
 publishing {
     publications {
-        maven(MavenPublication) {
+        mavenJava(MavenPublication) {
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
+            pom {
+                name = 'paygate-sdk'
+                description = 'PayGate SDK — Java client for Anthom payment gateway'
+                url = 'https://github.com/alphah0912/paygate-sdk'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'alphah0912'
+                        name = 'alphah0912'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/alphah0912/paygate-sdk.git'
+                    url = 'https://github.com/alphah0912/paygate-sdk'
+                }
+            }
         }
     }
+    repositories {
+        maven {
+            name = 'localStaging'
+            url = layout.buildDirectory.dir('staging')
+        }
+    }
+}
+
+signing {
+    def signingKeyFile = file('signing-key.asc')
+    def signingPassword = findProperty('signing.password')
+    if (signingKeyFile.exists()) {
+        useInMemoryPgpKeys(signingKeyFile.text, signingPassword)
+    }
+    sign publishing.publications.mavenJava
 }

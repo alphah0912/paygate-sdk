@@ -37,6 +37,10 @@ composer.lock
 go/bin/
 *.exe
 
+# Credentials (never commit)
+gradle.properties
+signing-key.asc
+
 # OS
 .DS_Store
 Thumbs.db
