@@ -6,7 +6,7 @@
 
 ```
 paygate-sdk/
-  java/v1/        → Java SDK   `io.github.alphah0912:paygate-sdk:1.0.2` (Maven Central)
+  java/v1/        → Java SDK   `io.github.alphah0912:paygate-sdk:1.0.3` (Maven Central)
   typescript/v1/  → TypeScript SDK   `npm i github:alphah0912/paygate-sdk#typescript/v1.0.0`
   python/v1/      → Python SDK       `pip install git+...@python/v1.0.0`
   php/v1/         → PHP SDK          `composer require paygate/sdk`
