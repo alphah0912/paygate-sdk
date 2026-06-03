@@ -126,6 +126,8 @@ class PaygateClientIT {
     @Test
     void shouldRespectEnvironmentBaseUrl() {
         assertThat(Environment.SANDBOX.getBaseUrl()).contains("sandbox");
-        assertThat(Environment.LIVE.getBaseUrl()).contains("api.antom.com");
+        assertThat(Environment.SANDBOX.getBaseUrl()).contains("backend.hunanxiaojunzi.com");
+        assertThat(Environment.LIVE.getBaseUrl()).contains("backend.hunanxiaojunzi.com");
+        assertThat(Environment.LIVE.getBaseUrl()).contains("api/gateway/v1");
     }
 }
