@@ -1,3 +1,42 @@
+# IDE
 .idea/
-.codegraph/
+.vscode/
+*.iml
+
+# Claude Code
 .claude/
+
+# CodeGraph
+.codegraph/
+
+# Java
+build/
+.gradle/
+java/.idea/
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+
+# TypeScript
+node_modules/
+dist/
+*.tsbuildinfo
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# PHP
+vendor/
+composer.lock
+
+# Go
+go/bin/
+*.exe
+
+# OS
+.DS_Store
+Thumbs.db

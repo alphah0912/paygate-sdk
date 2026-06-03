@@ -1,0 +1,41 @@
+# PayGate SDK — 跨语言统一错误码
+# 所有语言的 SDK 必须对齐本文件定义的错误码
+# 当上游 API 新增错误码时，先更新本文件，再同步到各语言实现
+
+errors:
+  INVALID_API_KEY:
+    code: "40001"
+    message: "Invalid API key"
+  INVALID_SIGNATURE:
+    code: "40002"
+    message: "Signature verification failed"
+  REQUEST_EXPIRED:
+    code: "40003"
+    message: "Request timestamp expired"
+  INVALID_PARAMETER:
+    code: "40004"
+    message: "Invalid parameter: {field}"
+  PAYMENT_NOT_FOUND:
+    code: "40401"
+    message: "Payment not found"
+  REFUND_NOT_FOUND:
+    code: "40402"
+    message: "Refund not found"
+  INVALID_PAYMENT_STATUS:
+    code: "40901"
+    message: "Invalid payment status for this operation"
+  DUPLICATE_REQUEST:
+    code: "40902"
+    message: "Duplicate request"
+  NETWORK_ERROR:
+    code: "50001"
+    message: "Network request failed"
+  SERVER_ERROR:
+    code: "50002"
+    message: "Server returned error: {status}"
+  RATE_LIMITED:
+    code: "50003"
+    message: "Rate limited, retrying after {retryAfter}s"
+  UNKNOWN_ERROR:
+    code: "59999"
+    message: "Unknown error: {message}"
